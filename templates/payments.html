@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% set active = "payments" %}
+{% block title %}Payments · My Lending{% endblock %}
+{% block content %}
+<div class="page-head">
+    <h1>Payments</h1>
+    <p>Record repayments and keep balances current.</p>
+</div>
+<div class="actions-row">
+    <a class="btn btn-primary" href="{{ url_for('new_payment') }}">＋ Record Payment</a>
+</div>
+<div class="panel">
+    <div class="panel-head"><h2>Payment History</h2></div>
+    <table class="ledger">
+        <thead><tr><th>Date</th><th>Borrower</th><th>Amount</th><th>Note</th></tr></thead>
+        <tbody>
+        {% for item in rows %}
+        <tr>
+            <td>{{ item['paid_at'] }}</td>
+            <td>{{ item['borrower'] }}</td>
+            <td class="num">{{ item['amount']|peso }}</td>
+            <td>{{ item['note'] or '' }}</td>
+        </tr>
+        {% else %}
+        <tr class="empty-row"><td colspan="4">No payments recorded yet.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

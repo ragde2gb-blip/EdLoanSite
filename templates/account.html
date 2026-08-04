@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Account · My Lending{% endblock %}
+{% block content %}
+<div class="page-head">
+    <h1>Account</h1>
+    <p>Signed in as {{ current_user['username'] }}.</p>
+</div>
+<div class="panel form-panel" style="padding:24px;">
+    <h2 style="font-family:var(--serif);font-size:17px;margin:0 0 16px;">Change password</h2>
+    <form method="post">
+        <div class="field">
+            <label for="current_password">Current password</label>
+            <input type="password" id="current_password" name="current_password" required autocomplete="current-password">
+        </div>
+        <div class="field">
+            <label for="new_password">New password</label>
+            <input type="password" id="new_password" name="new_password" required minlength="8" autocomplete="new-password">
+            <div class="hint">At least 8 characters.</div>
+        </div>
+        <div class="field">
+            <label for="confirm_password">Confirm new password</label>
+            <input type="password" id="confirm_password" name="confirm_password" required minlength="8" autocomplete="new-password">
+        </div>
+        <button class="btn btn-primary" type="submit">Update password</button>
+    </form>
+</div>
+{% endblock %}

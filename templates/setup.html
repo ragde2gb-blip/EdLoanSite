@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Create admin account · My Lending</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="auth-page">
+    <div class="auth-box">
+        <div class="auth-mark"><div class="brand-mark" style="width:52px;height:52px;font-size:24px;">₱</div></div>
+        <h1 class="auth-title">Welcome</h1>
+        <p class="auth-sub">Create the admin account to start using My Lending.</p>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <form method="post">
+            <div class="field">
+                <label for="username">Admin username</label>
+                <input type="text" id="username" name="username" autocomplete="username" required autofocus minlength="3">
+            </div>
+            <div class="field">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" autocomplete="new-password" required minlength="8">
+                <div class="hint">At least 8 characters.</div>
+            </div>
+            <div class="field">
+                <label for="confirm">Confirm password</label>
+                <input type="password" id="confirm" name="confirm" autocomplete="new-password" required minlength="8">
+            </div>
+            <button class="btn btn-primary btn-block" type="submit">Create admin account</button>
+        </form>
+        <div class="auth-foot">This account will have full access to all lending records.</div>
+    </div>
+</div>
+</body>
+</html>

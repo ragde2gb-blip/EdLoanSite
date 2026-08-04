@@ -1,0 +1,21 @@
+<div class="modal-backdrop" id="delete-modal">
+    <div class="modal-box">
+        <h3 class="modal-title">Delete borrower</h3>
+        <p id="delete-copy" style="color:var(--muted); font-size:13.5px; line-height:1.5;"></p>
+        <form method="post" id="delete-form">
+            <div class="form-actions">
+                <button class="btn btn-danger" type="submit">Delete permanently</button>
+                <button class="btn btn-ghost" type="button" onclick="closeModal('delete-modal')">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+function openDelete(loanId, borrowerName) {
+    const form = document.getElementById('delete-form');
+    form.action = '/borrowers/' + loanId + '/delete';
+    document.getElementById('delete-copy').textContent =
+        'Delete ' + borrowerName + "'s loan and all its payment history? This cannot be undone.";
+    document.getElementById('delete-modal').classList.add('open');
+}
+</script>

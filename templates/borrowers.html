@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% set active = "borrowers" %}
+{% block title %}Borrowers · My Lending{% endblock %}
+{% block content %}
+<div class="page-head">
+    <h1>Borrowers</h1>
+    <p>Search a borrower, contact number, or loan ID to view their balance.</p>
+</div>
+
+<form method="get" class="actions-row">
+    <input type="text" name="q" value="{{ term }}" placeholder="Search borrower, contact, or loan ID…"
+           style="max-width:420px;" onchange="this.form.submit()">
+    <div style="display:flex; gap:8px;">
+        <a class="btn btn-navy btn-sm" href="{{ url_for('export_data', fmt='csv', q=term) }}">Export CSV</a>
+        <a class="btn btn-primary btn-sm" href="{{ url_for('export_data', fmt='excel', q=term) }}">Export Excel</a>
+    </div>
+</form>
+
+<div class="panel">
+    <div style="padding:16px 20px 4px; font-family:var(--serif); font-weight:600; font-size:15px;">
+        {{ rows|length }} borrower record(s)
+    </div>
+    {% for row in rows %}
+    <div class="borrower-card">
+        <div>
+            <div class="borrower-name">{{ row['borrower'] }}</div>
+            <div class="borrower-id">Loan #{{ row['id'] }} &middot; {{ row['contact'] or 'No contact' }}</div>
+        </div>
+        <div class="borrower-balance">{{ row['balance']|peso }}<small>Balance</small></div>
+        <div class="borrower-actions">
+            <a class="btn btn-navy btn-sm" href="{{ url_for('borrower_detail', loan_id=row['id']) }}">View</a>
+            <button class="btn btn-ghost btn-sm" type="button"
+                    onclick="openRename({{ row['id'] }}, {{ row['borrower']|tojson }}, {{ url_for('borrowers')|tojson }})">Edit Name</button>
+            <button class="btn btn-danger btn-sm" type="button"
+                    onclick="openDelete({{ row['id'] }}, {{ row['borrower']|tojson }})">Delete</button>
+        </div>
+    </div>
+    {% else %}
+    <div class="empty-row" style="padding:34px 20px;">No borrower records match your search.</div>
+    {% endfor %}
+</div>
+
+{% include "_rename_modal.html" %}
+{% include "_delete_modal.html" %}
+{% endblock %}

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}My Lending{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-mark">₱</div>
+            <div class="brand-name">My Lending</div>
+        </div>
+        <div class="brand-sub">LOCAL LENDING LEDGER</div>
+        <nav class="nav-links">
+            <a class="nav-link {{ 'active' if active == 'dashboard' }}" href="{{ url_for('dashboard') }}"><span class="glyph">⌂</span> Dashboard</a>
+            <a class="nav-link {{ 'active' if active == 'borrowers' }}" href="{{ url_for('borrowers') }}"><span class="glyph">♙</span> Borrowers</a>
+            <a class="nav-link {{ 'active' if active == 'new_loan' }}" href="{{ url_for('new_loan') }}"><span class="glyph">＋</span> New Loan</a>
+            <a class="nav-link {{ 'active' if active == 'payments' }}" href="{{ url_for('payments') }}"><span class="glyph">₱</span> Payments</a>
+        </nav>
+        <div class="sidebar-foot">MY LENDING &middot; PHILIPPINES</div>
+    </aside>
+    <div class="main">
+        <div class="topbar">
+            {% if current_user %}
+            <a class="linklike" href="{{ url_for('account') }}">Account</a>
+            <a class="linklike" href="{{ url_for('logout') }}">Sign out</a>
+            <div class="user-chip">
+                <div class="user-avatar">{{ current_user['username'][:1]|upper }}</div>
+                {{ current_user['username'] }}
+            </div>
+            {% endif %}
+        </div>
+        <div class="content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</div>
+</body>
+</html>

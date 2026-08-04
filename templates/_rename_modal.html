@@ -1,0 +1,26 @@
+<div class="modal-backdrop" id="rename-modal">
+    <div class="modal-box">
+        <h3 class="modal-title">Update borrower name</h3>
+        <form method="post" id="rename-form">
+            <input type="hidden" name="redirect_to" id="rename-redirect">
+            <div class="field">
+                <label for="rename-input">Borrower name</label>
+                <input type="text" id="rename-input" name="borrower" required>
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-primary" type="submit">Save Name</button>
+                <button class="btn btn-ghost" type="button" onclick="closeModal('rename-modal')">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+function openRename(loanId, currentName, redirectTo) {
+    const form = document.getElementById('rename-form');
+    form.action = '/borrowers/' + loanId + '/rename';
+    document.getElementById('rename-input').value = currentName;
+    document.getElementById('rename-redirect').value = redirectTo;
+    document.getElementById('rename-modal').classList.add('open');
+}
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+</script>

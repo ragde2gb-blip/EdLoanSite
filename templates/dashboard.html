@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% set active = "dashboard" %}
+{% block title %}Dashboard · My Lending{% endblock %}
+{% block content %}
+<div class="page-head">
+    <h1>Good day, {{ current_user['username'] }}!</h1>
+    <p>Here is your lending business overview.</p>
+</div>
+
+<div class="card-row">
+    <div class="stat-card" style="--accent:var(--teal)">
+        <div class="stat-label">Active borrowers</div>
+        <div class="stat-value">{{ summary['borrowers'] }}</div>
+    </div>
+    <div class="stat-card" style="--accent:var(--ink)">
+        <div class="stat-label">Principal released</div>
+        <div class="stat-value">{{ summary['released']|peso }}</div>
+    </div>
+    <div class="stat-card" style="--accent:var(--gold)">
+        <div class="stat-label">Total receivable</div>
+        <div class="stat-value">{{ summary['receivable']|peso }}</div>
+    </div>
+    <div class="stat-card" style="--accent:var(--teal)">
+        <div class="stat-label">Payments collected</div>
+        <div class="stat-value">{{ summary['collected']|peso }}</div>
+    </div>
+</div>
+
+<div class="actions-row">
+    <a class="btn btn-primary" href="{{ url_for('new_loan') }}">＋ Add New Loan</a>
+    <a class="btn btn-navy" href="{{ url_for('payments') }}">Go to Payments</a>
+</div>
+
+<div class="panel">
+    <div class="panel-head"><h2>Recent Loans</h2></div>
+    <table class="ledger">
+        <thead>
+        <tr><th>Borrower</th><th>Principal</th><th>Interest / Term</th><th>Balance</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+        {% for row in recent %}
+        <tr>
+            <td><a href="{{ url_for('borrower_detail', loan_id=row['id']) }}">{{ row['borrower'] }}</a></td>
+            <td class="num">{{ row['principal']|peso }}</td>
+            <td class="num">{{ '%.1f'|format(row['monthly_interest']) }}% &times; {{ row['months'] }} mo.</td>
+            <td class="num">{{ row['balance']|peso }}</td>
+            <td><span class="status-pill {{ 'status-active' if row['status']=='Active' else 'status-other' }}">{{ row['status'] }}</span></td>
+        </tr>
+        {% else %}
+        <tr class="empty-row"><td colspan="5">No loans yet. Add your first loan to get started.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

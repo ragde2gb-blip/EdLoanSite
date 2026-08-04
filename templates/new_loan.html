@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% set active = "new_loan" %}
+{% block title %}New Loan · My Lending{% endblock %}
+{% block content %}
+<div class="page-head">
+    <h1>Create a Loan</h1>
+    <p>Interest is calculated as monthly rate &times; number of months.</p>
+</div>
+<div class="panel form-panel" style="padding:24px;">
+    <form method="post">
+        <div class="field">
+            <label for="borrower">Borrower name</label>
+            <input type="text" id="borrower" name="borrower" placeholder="Juan Dela Cruz" required>
+        </div>
+        <div class="field">
+            <label for="contact">Contact number</label>
+            <input type="tel" id="contact" name="contact" placeholder="09XX XXX XXXX">
+        </div>
+        <div class="field">
+            <label for="principal">Principal amount (&#8369;)</label>
+            <input type="number" id="principal" name="principal" placeholder="10000" min="0.01" step="0.01" required>
+        </div>
+        <div class="field">
+            <label for="interest">Monthly interest (%)</label>
+            <input type="number" id="interest" name="interest" placeholder="5" min="0" step="0.01" required>
+        </div>
+        <div class="field">
+            <label for="months">Loan term (months)</label>
+            <input type="number" id="months" name="months" placeholder="6" min="1" step="1" required>
+        </div>
+        <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Save Loan</button>
+            <a class="btn btn-ghost" href="{{ url_for('dashboard') }}">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

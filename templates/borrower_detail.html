@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% set active = "borrowers" %}
+{% block title %}{{ loan['borrower'] }} · My Lending{% endblock %}
+{% block content %}
+<a class="back-link" href="{{ url_for('borrowers') }}">&larr; Back to Borrowers</a>
+<div class="page-head" style="margin-bottom:18px;">
+    <h1>{{ loan['borrower'] }}</h1>
+    <p>Loan #{{ loan['id'] }} &middot; {{ loan['contact'] or 'No contact number' }}</p>
+</div>
+
+<div class="panel" style="padding:6px 22px; margin-bottom:24px;">
+    <div class="figure-row"><span class="figure-label">Principal amount</span><span class="figure-value">{{ loan['principal']|peso }}</span></div>
+    <div class="figure-row"><span class="figure-label">Interest</span><span class="figure-value">{{ '%.2f'|format(loan['monthly_interest']) }}% &times; {{ loan['months'] }} months = {{ loan['total_interest']|peso }}</span></div>
+    <div class="figure-row"><span class="figure-label">Total payment</span><span class="figure-value">{{ loan['total_payable']|peso }}</span></div>
+    <div class="figure-row"><span class="figure-label">Payments received</span><span class="figure-value">{{ loan['paid']|peso }}</span></div>
+    <div class="figure-row"><span class="figure-label">Running balance</span><span class="figure-value accent">{{ loan['balance']|peso }}</span></div>
+</div>
+
+<div class="panel-head" style="padding:0 0 10px;"><h2>Payment history</h2></div>
+<div class="panel" style="padding:6px 22px; margin-bottom:24px;">
+    {% for payment in history %}
+    <div class="payment-line">
+        <span>{{ payment['paid_at'] }}</span>
+        <span class="num">{{ payment['amount']|peso }}</span>
+        <span class="payment-note">{{ payment['note'] or '' }}</span>
+    </div>
+    {% else %}
+    <div class="payment-line" style="justify-content:center; color:var(--muted);">No payments have been recorded.</div>
+    {% endfor %}
+</div>
+
+<div class="form-actions">
+    <button class="btn btn-navy" type="button"
+            onclick="openRename({{ loan['id'] }}, {{ loan['borrower']|tojson }}, {{ url_for('borrower_detail', loan_id=loan['id'])|tojson }})">Update Borrower Name</button>
+    <button class="btn btn-danger" type="button"
+            onclick="openDelete({{ loan['id'] }}, {{ loan['borrower']|tojson }})">Delete Borrower</button>
+</div>
+
+{% include "_rename_modal.html" %}
+{% include "_delete_modal.html" %}
+{% endblock %}
